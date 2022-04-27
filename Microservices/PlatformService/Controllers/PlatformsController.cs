@@ -63,7 +63,6 @@ namespace PlatformService.Controllers
 
             var platformReadDto = _mapper.Map<PlatformReadDto>(platformModel);
 
-            // Send Sync Message
             try
             {
                 await _commandDataClient.SendPlatformToCommand(platformReadDto);
@@ -73,7 +72,6 @@ namespace PlatformService.Controllers
                 Console.WriteLine($"--> Could not send synchronously: {ex.Message}");
             }
 
-            //Send Async Message
             try
             {
                 var platformPublishedDto = _mapper.Map<PlatformPublishedDto>(platformReadDto);

@@ -15,28 +15,28 @@ namespace PlatformService.AsyncDataServices
 
         public MessageBusClient(IConfiguration configuration)
         {
-            // _configuration = configuration;
-            // var factory = new ConnectionFactory()
-            // {
-            //     HostName = _configuration["RabbitMQHost"],
-            //     Port = int.Parse(_configuration["RabbitMQPort"])
-            // };
-            // try
-            // {
-            //     _connection = factory.CreateConnection();
-            //     _channel = _connection.CreateModel();
+            _configuration = configuration;
+            var factory = new ConnectionFactory()
+            {
+                HostName = _configuration["RabbitMQHost"],
+                Port = int.Parse(_configuration["RabbitMQPort"])
+            };
+            try
+            {
+                _connection = factory.CreateConnection();
+                _channel = _connection.CreateModel();
 
-            //     _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
+                _channel.ExchangeDeclare(exchange: "trigger", type: ExchangeType.Fanout);
 
-            //     _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
+                _connection.ConnectionShutdown += RabbitMQ_ConnectionShutdown;
 
-            //     Console.WriteLine("--> Connected to MessageBus");
+                Console.WriteLine("--> Connected to MessageBus");
 
-            // }
-            // catch (Exception ex)
-            // {
-            //     Console.WriteLine($"--> Could not connect to the Message Bus: {ex.Message}");
-            // }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"--> Could not connect to the Message Bus: {ex.Message}");
+            }
         }
 
         public void PublishNewPlatform(PlatformPublishedDto platformPublishedDto)

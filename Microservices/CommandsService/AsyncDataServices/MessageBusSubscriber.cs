@@ -25,7 +25,7 @@ namespace CommandsService.AsyncDataServices
             _configuration = configuration;
             _eventProcessor = eventProcessor;
 
-            // InitializeRabbitMQ();
+            InitializeRabbitMQ();
         }
 
         private void InitializeRabbitMQ()
@@ -47,21 +47,21 @@ namespace CommandsService.AsyncDataServices
 
         protected override Task ExecuteAsync(CancellationToken stoppingToken)
         {
-            // stoppingToken.ThrowIfCancellationRequested();
+            stoppingToken.ThrowIfCancellationRequested();
 
-            // var consumer = new EventingBasicConsumer(_channel);
+            var consumer = new EventingBasicConsumer(_channel);
 
-            // consumer.Received += (ModuleHandle, ea) =>
-            // {
-            //     Console.WriteLine("--> Event Received!");
+            consumer.Received += (ModuleHandle, ea) =>
+            {
+                Console.WriteLine("--> Event Received!");
 
-            //     var body = ea.Body;
-            //     var notificationMessage = Encoding.UTF8.GetString(body.ToArray());
+                var body = ea.Body;
+                var notificationMessage = Encoding.UTF8.GetString(body.ToArray());
 
-            //     _eventProcessor.ProcessEvent(notificationMessage);
-            // };
+                _eventProcessor.ProcessEvent(notificationMessage);
+            };
 
-            // _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
+            _channel.BasicConsume(queue: _queueName, autoAck: true, consumer: consumer);
 
             return Task.CompletedTask;
         }
@@ -73,13 +73,13 @@ namespace CommandsService.AsyncDataServices
 
         public override void Dispose()
         {
-            // if(_channel.IsOpen)
-            // {
-            //     _channel.Close();
-            //     _connection.Close();
-            // }
+            if(_channel.IsOpen)
+            {
+                _channel.Close();
+                _connection.Close();
+            }
 
-            // base.Dispose(); 
+            base.Dispose(); 
         }
     }
 }

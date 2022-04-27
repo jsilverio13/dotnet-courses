@@ -43,7 +43,6 @@ Console.WriteLine($"--> CommandService Endpoint {configuration["CommandService"]
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 
 app.UseDeveloperExceptionPage();
 app.UseSwagger();
