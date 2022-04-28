@@ -11,14 +11,14 @@ namespace CommandsService.Data
     {
         public static void PrepPopulation(IApplicationBuilder applicationBuilder)
         {
-            // using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
-            // {
-            //     var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
+            using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
+            {
+                var grpcClient = serviceScope.ServiceProvider.GetService<IPlatformDataClient>();
 
-            //     var platforms = grpcClient.ReturnAllPlatforms();
+                var platforms = grpcClient.ReturnAllPlatforms();
 
-            //     SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
-            // }
+                SeedData(serviceScope.ServiceProvider.GetService<ICommandRepo>(), platforms);
+            }
         }
         
         private static void SeedData(ICommandRepo repo, IEnumerable<Platform> platforms)

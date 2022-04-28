@@ -2,6 +2,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
 using PlatformService.AsyncDataServices;
 using PlatformService.Data;
+using PlatformService.SyncDataServices.Grpc;
 using PlatformService.SyncDataServices.Http;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -24,10 +25,10 @@ else
          opt.UseInMemoryDatabase("InMem"));
 }
 
-services.AddDbContext<AppDbContext>(opt => opt.UseInMemoryDatabase("InMem"));
 services.AddScoped<IPlatformRepo, PlatformRepo>();
 services.AddHttpClient<ICommandDataClient, HttpCommandDataClient>();
 services.AddSingleton<IMessageBusClient, MessageBusClient>();
+services.AddGrpc();
 services.AddControllers();
 services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 services.AddSwaggerGen(c =>
@@ -55,12 +56,12 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    // endpoints.MapGrpcService<GrpcPlatformService>();
+    endpoints.MapGrpcService<GrpcPlatformService>();
 
-    // endpoints.MapGet("/protos/platforms.proto", async context =>
-    // {
-    //     await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto"));
-    // });
+    endpoints.MapGet("/protos/platforms.proto", async context =>
+    {
+        await context.Response.WriteAsync(File.ReadAllText("Protos/platforms.proto"));
+    });
 
 });
 
