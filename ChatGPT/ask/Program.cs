@@ -43,7 +43,7 @@ namespace ask
 
         private static async Task<string> RequestChatGpt(string[] args, HttpClient client)
         {
-            string json = File.ReadAllText("obj.json").Replace(Constants.Text.StringReplace, args[0]);
+            string json = "{\"model\": \"text-davinci-001\", \"prompt\": \"" + args[0]  + "\", \"temperature\": 1, \"max_tokens\": 100 }";
 
             var content = new StringContent(json, Encoding.UTF8, Constants.Text.ApplicationJson);
 

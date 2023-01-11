@@ -10,7 +10,7 @@ namespace ask
             public static class Authorization
             {
                 public const string Bearer = "Bearer";
-                public const string ApiKey = "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";
+                public const string ApiKey = "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";
             }
         }
         public static class Text
